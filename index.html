@@ -5,6 +5,7 @@
     <title>齒輪計算器</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
 
 <div class="container">
@@ -24,6 +25,9 @@
         <!-- Tab content for mode1 -->
         <div id="mode1" class="tab-content">
             齒輪基本參屬運算
+
+            <button id="openModalButton">打開運算視窗</button>
+
             <input type="number" id="input1-mode1" placeholder="模數">
             <input type="number" id="input2-mode1" placeholder="齒數(1)">
             <input type="number" id="input3-mode1" placeholder="齒數(2)">
@@ -34,6 +38,28 @@
 
             <!-- Add more inputs as needed -->
             <button onclick="calculate('mode1')">計算</button>
+        </div>
+
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>嚙和壓力角查表計算</p>
+                <input type="number" id="modalInput1" placeholder="模數">
+                <input type="number" id="modalInput2" placeholder="齒數(1)">
+                <input type="number" id="modalInput3" placeholder="齒數(2)">
+                <input type="number" id="modalInput4" placeholder="壓力角">
+                <input type="number" id="modalInput5" placeholder="轉位係數(1)">
+                <input type="number" id="modalInput6" placeholder="轉位係數(2)">
+                <input type="number" id="modalInput7" placeholder="螺旋角(直齒輪請填0)">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                <button onclick="calValue()">計算漸開線函數</button>
+                <div class="output">
+                    <h2>漸開線函數:
+                    <div id="outputContent2"></div></h2>
+                </div>
+                <div id="additionalInputs"></div>
+            </div>
         </div>
 
         <!-- Tab content for mode2 -->
@@ -103,15 +129,19 @@
             <!-- Add more inputs as needed -->
             <button onclick="calculate('mode6')">計算</button>
         </div>
+
         <!-- Add more divs for additional modes if necessary -->
+        <button id="refreshButton">重新整理</button>
     </div>
+
     
+
     <div class="output">
         <h2>Output</h2>
         <div id="outputContent"class="scrollable-table">輸出結果將顯示在這裡...</div>
     </div>
 </div>
 
-<script src="script.js"></script>
+<script  src="script.js"></script>
 </body>
 </html>
