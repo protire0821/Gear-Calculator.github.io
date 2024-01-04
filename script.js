@@ -1,7 +1,63 @@
 var inv = 0; //漸開線函數
 var  rr = 0; //嚙和壓力角
 
+document.getElementById('refreshButton').addEventListener('click', function() {
+    // 重新加載當前頁面
+    location.reload();
+});
 
+// Function to open a specific tab
+function openTab(evt, mode) {
+    // Hide all tab contents
+    var tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.style.display = 'none');
+
+    // Remove 'active' class from all tab links
+    var tabLinks = document.querySelectorAll('.tab-link');
+
+    tabLinks.forEach(link => link.classList.remove('active'));
+
+    // Show the current tab, and add 'active' class to the button that opened the tab
+    document.getElementById(mode).style.display = 'block';
+    evt.currentTarget.classList.add('active');
+}
+
+// Function to handle calculation (placeholder function, needs proper implementation)
+function calculate(mode) {
+    var outputContent = document.getElementById('outputContent');
+    // Perform calculation based on mode
+    // This is just a placeholder, you should implement the actual calculation logic
+    outputContent.textContent = `Calculation result for ${mode}`;
+}
+
+// Initialize the page with mode1 tab open
+document.addEventListener('DOMContentLoaded', () => {
+    openTab(new Event('click'), 'mode1');
+});
+
+
+//mode1 cal
+// 獲取元素
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("openModalButton");
+var span = document.getElementsByClassName("close")[0];
+
+// 當用戶點擊按鈕時打開模態框
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// 當用戶點擊 x 按鈕時關閉模態框
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// 當用戶點擊模態框外的區域時，關閉模態框
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 // 儲存和計算輸入的值
 function calValue() {
@@ -468,7 +524,7 @@ function calculate_mode6(bs,cs,sb,sc){
 
 function calculate(mode) {
     let outputText = '';
-  
+    
     if (mode === 'mode1') {
       // 获取 Mode 1 的输入值
       let m = document.getElementById('input1-mode1').value;
@@ -490,7 +546,7 @@ function calculate(mode) {
       
     } else if (mode === 'mode2') {
       // 获取 Mode 2 的输入值
-      
+    
       let power = document.getElementById('input1-mode2').value;
       let rpm = document.getElementById('input2-mode2').value;
       let dpr = document.getElementById('input3-mode2').value;
@@ -553,63 +609,7 @@ function calculate(mode) {
   }
 
 
-document.getElementById('refreshButton').addEventListener('click', function() {
-    // 重新加載當前頁面
-    location.reload();
-});
 
-// Function to open a specific tab
-function openTab(evt, mode) {
-    // Hide all tab contents
-    var tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => tab.style.display = 'none');
-
-    // Remove 'active' class from all tab links
-    var tabLinks = document.querySelectorAll('.tab-link');
-
-    tabLinks.forEach(link => link.classList.remove('active'));
-
-    // Show the current tab, and add 'active' class to the button that opened the tab
-    document.getElementById(mode).style.display = 'block';
-    evt.currentTarget.classList.add('active');
-}
-
-// Function to handle calculation (placeholder function, needs proper implementation)
-function calculate(mode) {
-    var outputContent = document.getElementById('outputContent');
-    // Perform calculation based on mode
-    // This is just a placeholder, you should implement the actual calculation logic
-    outputContent.textContent = `Calculation result for ${mode}`;
-}
-
-// Initialize the page with mode1 tab open
-document.addEventListener('DOMContentLoaded', () => {
-    openTab(new Event('click'), 'mode1');
-});
-
-
-//mode1 cal
-// 獲取元素
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("openModalButton");
-var span = document.getElementsByClassName("close")[0];
-
-// 當用戶點擊按鈕時打開模態框
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// 當用戶點擊 x 按鈕時關閉模態框
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// 當用戶點擊模態框外的區域時，關閉模態框
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
 
 
 
