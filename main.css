@@ -189,3 +189,42 @@ table input[type="number"], table select {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* 下拉式選單的基本樣式 */
+select {
+    width: 200px; /* 選單寬度 */
+    padding: 10px; /* 內部間距 */
+    margin: 10px; /* 外部間距 */
+    border: 1px solid #ccc; /* 邊框樣式 */
+    border-radius: 5px; /* 邊框圓角 */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* 盒子陰影 */
+    background-color: white; /* 背景顏色 */
+    font-size: 16px; /* 文字大小 */
+    color: #333; /* 文字顏色 */
+    -webkit-appearance: none; /* 移除預設外觀 */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* 針對 Webkit 瀏覽器的下拉箭頭樣式 */
+select::-webkit-select-arrow {
+    color: #333; /* 箭頭顏色 */
+}
+
+/* 針對 Mozilla Firefox 的下拉箭頭樣式 */
+select::-moz-select-arrow {
+    color: #333; /* 箭頭顏色 */
+}
+
+/* 當選單獲得焦點時的樣式 */
+select:focus {
+    outline: none; /* 移除焦點時的輪廓 */
+    border-color: #007bff; /* 改變邊框顏色 */
+}
+
+/* 選項的基本樣式 */
+option {
+    padding: 10px; /* 選項內部間距 */
+    background-color: white; /* 選項背景顏色 */
+    color: #333; /* 選項文字顏色 */
+}

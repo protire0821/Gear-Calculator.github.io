@@ -1,5 +1,14 @@
 var inv = 0; //漸開線函數
 var  rr = 0; //嚙和壓力角
+var ka = 1;
+var ks = 1;
+var cpm = 0;
+var ac,bc,cc;
+var ce = 1;
+var ki = 1;
+var kb = 1;
+var kv;
+var km;
 
 document.getElementById('refreshButton').addEventListener('click', function() {
     // 重新加載當前頁面
@@ -58,6 +67,16 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+
+// 儲存和計算輸入的值
+function saveValue() {
+    var inputValue = document.getElementById("modalInput").value;
+    // 在此進行計算或其他操作
+    // ...
+    modal.style.display = "none"; // 閉關閉模態框
+}
+
 
 // 儲存和計算輸入的值
 function calValue() {
@@ -396,15 +415,15 @@ function calculate_mode2(power,rpm,dpr,pressure_ang,helix){
     Ft = 2* T/dpr;
     Fx = Ft *Math.tan(helix*(Math.PI/ 180));
     Fr = Ft * Math.tan(pressure_ang*(Math.PI/ 180))/Math.cos(helix*(Math.PI/ 180));
-    table += `<tr><td>軸向力</td><td>${Ft}</td></tr>`;
-    table += `<tr><td>切向力</td><td>${Fx}</td></tr>`;
+    table += `<tr><td>軸向力</td><td>${Fx}</td></tr>`;
+    table += `<tr><td>切向力</td><td>${Ft}</td></tr>`;
     table += `<tr><td>徑向力</td><td>${Fr}</td></tr>`;
     
     container.innerHTML = table;
 }
 
 //mode3
-function calculate_mode3(rpm,j,F,wt,m,dp){
+function calculate_mode3(rpm,j,F,wt,m,dp,cmc){
 
     rpm = parseFloat(rpm);
     j = parseFloat(j);
@@ -412,14 +431,30 @@ function calculate_mode3(rpm,j,F,wt,m,dp){
     wt = parseFloat(wt);
     m = parseFloat(m);
     dp = parseFloat(dp);
+    cmc = parseFloat(cmc);
 
-    kv = 50 / (50 + Math.sqrt(100*rpm*dp));
-    km = 1 + (F / 10 /dp) - 0.0375 + 0.000492*F + 0.127 + 0.622*Math.pow(10,-7)*F - 1.694*Math.pow(10,-7)*Math.pow(F,2);
-    sc = wt*km/F/m/j/kv;
+    
+    QQQ = F/10/dp;
+    if(QQQ<=0.05){
+        QQQ = 0.05;
+    }
+
+    if(F<=25.4){
+        cpf = QQQ - 0.025;
+    }else if(F>=25.4 && F<= 431.8){
+        cpf = QQQ - 0.0375 + 0.000492*F;
+    }else if(F>=431.8 && F<= 1016){
+        cpf = QQQ - 0.1109 + 0.0008149*F-3.53401*Math.pow(10,-7)*Math.pow(F,2);
+    }
+
+    cma = ac+bc*F+cc*F*F;
+
+    km = 1 + cmc*(cpf*cpm + cma*ce) ;
+    st = wt*ka*ks*km*kb*ki/F/m/j/kv;
 
     const container = document.getElementById('outputContent');
     let table = '<table border="gear1"><tr><th>名稱</th><th>數值</th></tr>';
-    table += `<tr><td>彎曲應力</td><td>${sc}</td></tr>`;
+    table += `<tr><td>彎曲應力</td><td>${st}</td></tr>`;
     container.innerHTML = table;
 }
 
@@ -436,10 +471,16 @@ function calculate_mode4(rpm,i,F,wt,dp,E1,E2,v1,v2){
     v1 = parseFloat(v1);
     v2 = parseFloat(v2);
 
-    cv = 50 / (50 + Math.sqrt(100*rpm*dp));
-    cm = 1 + (F / 10 /dp) - 0.0375 + 0.000492*F + 0.127 + 0.622*Math.pow(10,-3)*F - 1.694*Math.pow(10,-7)*Math.pow(F,2);
     cp = Math.sqrt(1/(Math.PI*((1-Math.pow(v1,2))/E1+(1-Math.pow(v2,2))/E2)));
-    ss = cp*Math.sqrt(wt*cm/cv*1/(dp*F*i));
+
+    ca = ka;
+    cs = ks;
+    cm = km;
+    cf = 1;
+    cv = kv;
+   
+    
+    ss = cp*Math.sqrt(wt*ca*cs*cm*cf/cv*1/(dp*F*i));
         
     const container = document.getElementById('outputContent');
     let table = '<table border="gear1"><tr><th>名稱</th><th>數值</th></tr>';
@@ -448,10 +489,13 @@ function calculate_mode4(rpm,i,F,wt,dp,E1,E2,v1,v2){
 }
 
 //mode5
-function calculate_mode5(sb,sc,N,T,v1,MG,hb1,hb2){
+function calculate_mode5(sb1,sc1,sb2,sc2,N,T,v1,MG,hb1,hb2){
 
-    sb = parseFloat(sb);
-    sc = parseFloat(sc);
+    sb1 = parseFloat(sb1);
+    sc1 = parseFloat(sc1);
+    sb2 = parseFloat(sb2);
+    sc2 = parseFloat(sc2);
+
     N = parseFloat(N);
     T = parseFloat(T);
     v1 = parseFloat(v1);
@@ -495,12 +539,17 @@ function calculate_mode5(sb,sc,N,T,v1,MG,hb1,hb2){
     }else{
         ch = 1 + 0.0698 * (MG - 1);
     }
-    sb = kl / kt / kr * sb;
-    sc = kl * ch / kt / kr * sc;
+    sb1 = kl / kt / kr * sb1;
+    sc1 = kl * ch / kt / kr * sc1;
+    sb2 = kl / kt / kr * sb2;
+    sc2 = kl * ch / kt / kr * sc2;
     const container = document.getElementById('outputContent');
-    let table = '<table border="gear1"><tr><th>名稱</th><th>數值</th></tr>';
-    table += `<tr><td>材料抗彎曲強度</td><td>${sb}</td></tr>`;
-    table += `<tr><td>材料抗接觸破壞強度</td><td>${sc}</td></tr>`;
+    let table = '<table border="gear1"><tr><th>小齒輪</th><th>數值</th></tr>';
+    table += `<tr><td>材料抗彎曲強度</td><td>${sb1}</td></tr>`;
+    table += `<tr><td>材料抗接觸破壞強度</td><td>${sc1}</td></tr>`;
+    table += '<tr><th>大齒輪</th><th>數值</th></tr>';
+    table += `<tr><td>材料抗彎曲強度</td><td>${sb2}</td></tr>`;
+    table += `<tr><td>材料抗接觸破壞強度</td><td>${sc2}</td></tr>`;
     container.innerHTML = table;
 }
 
@@ -511,7 +560,7 @@ function calculate_mode6(bs,cs,sb,sc){
     sb = parseFloat(sb);
     sc = parseFloat(sc);
 
-    Nb= sb / bs;
+    Nb = sb / bs;
     Nc = sc / cs;
     const container = document.getElementById('outputContent');
     let table = '<table border="gear1"><tr><th>名稱</th><th>數值</th></tr>';
@@ -562,8 +611,123 @@ function calculate(mode) {
         let F = document.getElementById('input3-mode3').value;
         let wt = document.getElementById('input4-mode3').value;
         let m = document.getElementById('input5-mode3').value;
-        let dp = document.getElementById('input5-mode3').value;
-        calculate_mode3(rpm,j,F,wt,m,dp);
+        let dp = document.getElementById('input6-mode3').value;
+        var selectElement1 = document.getElementById('mySelect1');
+        var selectedOptionValue1 = selectElement1.value;
+        var selectElement2 = document.getElementById('mySelect2');
+        var selectedOptionValue2 = selectElement2.value;
+
+        if(selectedOptionValue1 == "option1_1"){
+            if(selectedOptionValue2 == "option2_1" ){
+                ka = 1;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.25;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.5;
+            }
+        }else if(selectedOptionValue1 == "option1_2"){
+            if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.25;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.5;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.75;
+            }
+        }else if(selectedOptionValue1 == "option1_3"){
+            if(selectedOptionValue2 == "option2_1" ){
+                ka = 1.75;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 2;
+            }else if(selectedOptionValue2 == "option2_1" ){
+                ka = 2.25;
+            }
+        }
+
+        var selectElement3 = document.getElementById('mySelect3');
+        var selectedOptionValue3 = selectElement3.value;
+        if(selectedOptionValue3 == "option3_1"){
+            ks = 1;
+        }else if(selectedOptionValue3 == "option3_2"){
+            ks = 1.25;
+        }
+
+        var selectElement4 = document.getElementById('mySelect4');
+        var selectedOptionValue4 = selectElement4.value;
+        if(selectedOptionValue4 == "option4_1"){
+            cmc = 0.8;
+        }else if(selectedOptionValue4 == "option4_2"){
+            cmc = 1;
+        }
+
+        let cpm = document.getElementById('input7-mode3').value;
+        cpm = parseFloat(cpm);
+        if(cpm < 0.175){
+            cpm = 1;
+        }else if(cpm > 0.175){
+            cpm = 1.1;
+        }
+
+        var selectElement5 = document.getElementById('mySelect5');
+        var selectedOptionValue5 = selectElement5.value;
+        if(selectedOptionValue5 == "option5_1"){
+            ac = 0.274;
+            bc = 0.000657;
+            cc = -1.18575*Math.pow(10,-7);
+        }else if(selectedOptionValue5 == "option5_2"){
+            ac = 0.127;
+            bc = 0.000622;
+            cc = -1.69415*Math.pow(10,-7);
+        }else if(selectedOptionValue5 == "option5_3"){
+            ac = 0.0675;
+            bc = 0.000504;
+            cc = -1.4353*Math.pow(10,-7);
+        }else if(selectedOptionValue5 == "option5_4"){
+            ac = 0.038;
+            bc = 0.000420;
+            cc = -1.2741*Math.pow(10,-7);
+        }
+        
+        var selectElement6 = document.getElementById('mySelect6');
+        var selectedOptionValue6 = selectElement6.value;
+        if(selectedOptionValue6 == "option6_1"){
+            ce = 0.8;
+        }else if(selectedOptionValue6 == "option6_2"){
+            ce = 1;
+        }
+
+        var selectElement7 = document.getElementById('mySelect7');
+        var selectedOptionValue7 = selectElement7.value;
+        if(selectedOptionValue7 == "option6_1"){
+            ki = 1.42;
+        }else if(selectedOptionValue7 == "option6_2"){
+            ki = 1;
+        }
+
+        let tr = document.getElementById('input8-mode3').value;
+        tr = parseFloat(tr);
+        let ht = document.getElementById('input9-mode3').value;
+        ht = parseFloat(ht);
+
+        mb = tr/ht;
+
+        if(mb >= 0.5 && mb <= 1.2){
+            kb = -2*mb+3.4;
+        }else if(mb > 1.2){
+            kb = 1;
+        }
+        let qv = document.getElementById('input10-mode3').value;
+        qv = parseFloat(qv);
+        if(qv>=6 && qv<=11){
+            BB = (12-qv);
+            B = 0.25* Math.pow(BB,2/3);
+            A = 50+56*(1-B);
+            kvv = A/(A+Math.sqrt(200*rpm*dp));
+            kv = Math.pow(kvv,B);
+        }else if(qv <= 5){
+            kv = 50 / (50 + Math.sqrt(100*rpm*dp));
+        }
+
+        calculate_mode3(rpm,j,F,wt,m,dp,cmc);
         
       }else if (mode === 'mode4') {
         // 获取 Mode 4 的输入值
@@ -582,8 +746,7 @@ function calculate(mode) {
       }else if (mode === 'mode5') {
         // 获取 Mode 5 的输入值
         
-        let sb = document.getElementById('input1-mode5').value;
-        let sc = document.getElementById('input2-mode5').value;
+
         let N = document.getElementById('input3-mode5').value;
         let T = document.getElementById('input4-mode5').value;
         let v1 = document.getElementById('input5-mode5').value;
@@ -591,7 +754,13 @@ function calculate(mode) {
         let hb1 = document.getElementById('input7-mode5').value;
         let hb2  = document.getElementById('input8-mode5').value;
 
-        calculate_mode5(sb,sc,N,T,v1,MG,hb1,hb2);
+        sb1 = -1.8769 + 1.14395*hb1-0.0010412*Math.pow(hb1,2);
+        sc1 = 179.26+2.25453*hb1;
+
+        sb2 = -1.8769 + 1.14395*hb2-0.0010412*Math.pow(hb2,2);
+        sc2 = 179.26+2.25453*hb2;
+
+        calculate_mode5(sb1,sc1,sb1,sc2,N,T,v1,MG,hb1,hb2);
         
       }else if (mode === 'mode6') {
         // 获取 Mode 3 的输入值

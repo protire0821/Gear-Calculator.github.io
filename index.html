@@ -67,7 +67,7 @@
             齒輪所受作用力計算
             <input type="number" id="input1-mode2" placeholder="功率">
             <input type="number" id="input2-mode2" placeholder="轉速(rpm)">
-            <input type="number" id="input3-mode2" placeholder="嚙合圓半徑">
+            <input type="number" id="input3-mode2" placeholder="嚙合圓半徑(m)">
             <input type="number" id="input4-mode2" placeholder="嚙合壓力角">
             <input type="number" id="input5-mode2" placeholder="螺旋角(直齒輪請填0)">
             <!-- Add more inputs as needed -->
@@ -77,15 +77,83 @@
         <!-- Tab content for mode3 -->
         <div id="mode3" class="tab-content">
             彎曲應力計算
+
             <input type="number" id="input1-mode3" placeholder="轉速(rpm)">
             <input type="number" id="input2-mode3" placeholder="齒面寬">
             <input type="number" id="input3-mode3" placeholder="切向力">
             <input type="number" id="input4-mode3" placeholder="彎曲幾何係數">
             <input type="number" id="input5-mode3" placeholder="節圓直徑">
             <input type="number" id="input6-mode3" placeholder="模數">
+        <div>
+            ka輸入機器
+            <select id="mySelect1">
+                <option value="option1_1">均勻力</option>
+                <option value="option1_2">中衝擊</option>
+                <option value="option1_3">重衝擊</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <div>
+            ka輸出機器
+            <select id="mySelect2">
+                <option value="option2_1">均勻力</option>
+                <option value="option2_2">中衝擊</option>
+                <option value="option2_3">重衝擊</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <div>
+            ks大小模數
+            <select id="mySelect3">
+                <option value="option3_1">小模數</option>
+                <option value="option3_2">大模數</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <div>
+            Cmc是否經過修形
+            <select id="mySelect4">
+                <option value="option4_1">修形</option>
+                <option value="option4_2">未修形</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <input type="number" id="input7-mode3" placeholder="跨距比">
+
+        <div>
+            Cma齒輪場所選用
+            <select id="mySelect5">
+                <option value="option5_1">開放式齒輪</option>
+                <option value="option5_2">一般密閉式齒輪</option>
+                <option value="option5_3">精密密閉式齒輪</option>
+                <option value="option5_4">超精密密閉式齒輪</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <div>
+            Ce是否研磨
+            <select id="mySelect6">
+                <option value="option6_1">有研磨</option>
+                <option value="option6_2">未研磨</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <div>
+            ki是否為惰輪
+            <select id="mySelect7">
+                <option value="option7_1">惰輪</option>
+                <option value="option7_2">非惰輪</option>
+                <!-- 更多選項 -->
+            </select>
+        </div>
+        <input type="number" id="input8-mode3" placeholder="齒輪輪緣厚">
+        <input type="number" id="input9-mode3" placeholder="全齒高">
+        <input type="number" id="input10-mode3" placeholder="QV齒論AGMA等級">
+
             <!-- Add more inputs as needed -->
             <button onclick="calculate('mode3')">計算</button>
         </div>
+
 
         <!-- Tab content for mode4 -->
         <div id="mode4" class="tab-content">
@@ -106,14 +174,12 @@
         <!-- Tab content for mode5 -->
         <div id="mode5" class="tab-content">
             材料抵抗強度計算
-            <input type="number" id="input1-mode5" placeholder="理論抗彎曲強度">
-            <input type="number" id="input2-mode5" placeholder="理論抗接觸強度">
             <input type="number" id="input3-mode5" placeholder="負載循環次數N">
             <input type="number" id="input4-mode5" placeholder="工作溫度T">
             <input type="number" id="input5-mode5" placeholder="可靠度(請輸入90/99/99.9/99.99)">
             <input type="number" id="input6-mode5" placeholder="齒輪減數比MG">
-            <input type="number" id="input7-mode5" placeholder="勃氏硬度(1)">
-            <input type="number" id="input8-mode5" placeholder="勃氏硬度(2)">
+            <input type="number" id="input7-mode5" placeholder="小齒輪勃氏硬度(1)">
+            <input type="number" id="input8-mode5" placeholder="大齒輪勃氏硬度(2)">
             <!-- Add more inputs as needed -->
             <button onclick="calculate('mode5')">計算</button>
         </div>
